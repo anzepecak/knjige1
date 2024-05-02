@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// Login page
 public class Main extends JFrame implements ActionListener {
     // Povezava z bazo podatkov
     private static final String PGHOST = "ep-billowing-feather-a2yuhppe.eu-central-1.aws.neon.tech";
@@ -18,6 +19,7 @@ public class Main extends JFrame implements ActionListener {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private JButton signupButton; // Dodamo gumb za prijavo
 
     public Main() {
         // Nastavi okno
@@ -25,7 +27,7 @@ public class Main extends JFrame implements ActionListener {
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(3, 2));
+        setLayout(new GridLayout(4, 2)); // Spremenimo na 4 vrstice, da lahko dodamo gumb Signup
 
         // Dodaj komponente
         add(new JLabel("Email:"));
@@ -40,11 +42,19 @@ public class Main extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
         add(loginButton);
 
-        setVisible(true);
+        signupButton = new JButton("Signup"); // Dodamo gumb Signup
+        signupButton.addActionListener(this);
+        add(signupButton);
     }
 
     public static void main(String[] args) {
-        new Main();
+        Main main = new Main();
+        main.showLoginWindow(); // Prikaži okno za prijavo
+    }
+
+    // Metoda za prikaz okna za prijavo
+    private void showLoginWindow() {
+        setVisible(true);
     }
 
     @Override
@@ -59,6 +69,12 @@ public class Main extends JFrame implements ActionListener {
 
                 if (login(connection, email, password)) {
                     JOptionPane.showMessageDialog(this, "Uspešno ste se prijavili!");
+
+                    // Če je prijava uspešna, odprite novo okno domače strani
+                    new domacastran();
+
+                    // Zaprite okno za prijavo
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Napačen email ali geslo.");
                 }
@@ -67,6 +83,9 @@ public class Main extends JFrame implements ActionListener {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Napaka pri povezavi z bazo: " + ex.getMessage());
             }
+        } else if (e.getSource() == signupButton) {
+            // Če je kliknjen gumb Signup, odpremo novo okno za prijavo
+            new Signup();
         }
     }
 
