@@ -40,7 +40,8 @@ public class domacastran extends JFrame {
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Koda za odpiranje okna za dodajanje knjige
-                new DodajKnjigo();
+                new DodajKnjigo(userId);
+
             }
         });
         add(addButton, BorderLayout.SOUTH);
@@ -116,6 +117,15 @@ public class domacastran extends JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error deleting book: " + ex.getMessage());
         }
+    }
+
+    public void refresh() {
+        // Clear the table
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        // Reload user's books
+        loadUserBooks();
     }
 
 
