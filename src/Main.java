@@ -8,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// Login page
 public class Main extends JFrame implements ActionListener {
-    // Povezava z bazo podatkov
     private static final String PGHOST = "ep-billowing-feather-a2yuhppe.eu-central-1.aws.neon.tech";
     private static final String PGDATABASE = "knjiznica";
     private static final String PGUSER = "knjiznica_owner";
@@ -19,17 +17,16 @@ public class Main extends JFrame implements ActionListener {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private JButton signupButton; // Dodamo gumb za prijavo
+    private JButton signupButton;
+    private int userId; // To shranjuje ID uporabnika
 
     public Main() {
-        // Nastavi okno
         setTitle("Prijava");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(4, 2)); // Spremenimo na 4 vrstice, da lahko dodamo gumb Signup
+        setLayout(new GridLayout(4, 2));
 
-        // Dodaj komponente
         add(new JLabel("Email:"));
         emailField = new JTextField();
         add(emailField);
@@ -42,17 +39,16 @@ public class Main extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
         add(loginButton);
 
-        signupButton = new JButton("Signup"); // Dodamo gumb Signup
+        signupButton = new JButton("Signup");
         signupButton.addActionListener(this);
         add(signupButton);
     }
 
     public static void main(String[] args) {
         Main main = new Main();
-        main.showLoginWindow(); // Prikaži okno za prijavo
+        main.showLoginWindow();
     }
 
-    // Metoda za prikaz okna za prijavo
     private void showLoginWindow() {
         setVisible(true);
     }
@@ -70,10 +66,10 @@ public class Main extends JFrame implements ActionListener {
                 if (login(connection, email, password)) {
                     JOptionPane.showMessageDialog(this, "Uspešno ste se prijavili!");
 
-                    // Če je prijava uspešna, odprite novo okno domače strani
-                    new domacastran();
+                    // Shranimo ID uporabnika
+                    userId = getUserId(connection, email, password);
 
-                    // Zaprite okno za prijavo
+                    new domacastran(userId); // Preko konstruktora prenesemo ID uporabnika
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Napačen email ali geslo.");
@@ -84,12 +80,10 @@ public class Main extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Napaka pri povezavi z bazo: " + ex.getMessage());
             }
         } else if (e.getSource() == signupButton) {
-            // Če je kliknjen gumb Signup, odpremo novo okno za prijavo
             new Signup();
         }
     }
 
-    // Metoda za preverjanje emaila in gesla uporabnika
     private static boolean login(Connection connection, String email, String password) throws SQLException {
         String sql = "SELECT * FROM uporabniki WHERE email = ? AND geslo = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -99,5 +93,20 @@ public class Main extends JFrame implements ActionListener {
                 return resultSet.next();
             }
         }
+    }
+
+    // Metoda za pridobitev ID-ja uporabnika
+    private static int getUserId(Connection connection, String email, String password) throws SQLException {
+        String sql = "SELECT id FROM uporabniki WHERE email = ? AND geslo = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
+            }
+        }
+        return -1; // Če uporabnik ni najden, vrnemo -1
     }
 }
