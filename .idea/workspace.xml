@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af7a62bb-ba01-4f55-aad9-0bbefcb7bbbb" name="Changes" comment="Ustvarjanje signup paga">
-      <change afterPath="$PROJECT_DIR$/src/DodajKnjigo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/UpdateKnjiga.java" afterDir="false" />
+    <list default="true" id="af7a62bb-ba01-4f55-aad9-0bbefcb7bbbb" name="Changes" comment="Ustvarjanje domače strani , kjer lahko user vidi svoje knjige in doda/izbriše/uredi knjige">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jdatepicker_1_3_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib__2_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DodajAvtorja.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DodajZanr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/knjige123.iml" beforeDir="false" afterPath="$PROJECT_DIR$/knjige123.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DodajKnjigo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DodajKnjigo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/domacastran.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/domacastran.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="SIgnup-page" />
+        <entry key="$PROJECT_DIR$" value="Homepage" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,20 +57,91 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.DodajKnjigo (1).executor": "Run",
+    "Application.DodajKnjigo (2).executor": "Run",
+    "Application.DodajKnjigo (3).executor": "Run",
+    "Application.DodajKnjigo (4).executor": "Run",
+    "Application.DodajKnjigo (5).executor": "Run",
+    "Application.DodajKnjigo.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.Signup.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Homepage",
+    "git-widget-placeholder": "Dodajanje-knjig",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/timur/Desktop/knjigeprojekt/knjige123/lib",
-    "onboarding.tips.debug.path": "C:/Users/timur/Desktop/knjigeprojekt/knjige123/src/Main.java"
+    "last_opened_file_path": "C:/Users/timur/Desktop/jdatepicker-1.3.4.jar",
+    "onboarding.tips.debug.path": "C:/Users/timur/Desktop/knjigeprojekt/knjige123/src/Main.java",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\timur\Desktop\knjigeprojekt\knjige123\lib" />
+      <recent name="C:\Users\timur\Desktop\knjigeprojekt\knjige123\src" />
     </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="DodajKnjigo (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DodajKnjigo" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DodajKnjigo (3)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DodajKnjigo" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DodajKnjigo (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DodajKnjigo" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DodajKnjigo (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DodajKnjigo" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DodajKnjigo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DodajKnjigo" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="knjige123" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.DodajKnjigo" />
+      <item itemvalue="Application.DodajKnjigo (2)" />
+      <item itemvalue="Application.DodajKnjigo (3)" />
+      <item itemvalue="Application.DodajKnjigo (4)" />
+      <item itemvalue="Application.DodajKnjigo (5)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.DodajKnjigo" />
+        <item itemvalue="Application.DodajKnjigo (5)" />
+        <item itemvalue="Application.DodajKnjigo (4)" />
+        <item itemvalue="Application.DodajKnjigo (3)" />
+        <item itemvalue="Application.DodajKnjigo (2)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -102,14 +176,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714650784715</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Ustvarjanje domače strani , kjer lahko user vidi svoje knjige in doda/izbriše/uredi knjige">
+      <option name="closed" value="true" />
+      <created>1714652399787</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1714652399787</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Začetek login paga" />
     <MESSAGE value="Končan login page" />
     <MESSAGE value="Ustvarjanje signup paga" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ustvarjanje signup paga" />
+    <MESSAGE value="Ustvarjanje domače strani , kjer lahko user vidi svoje knjige in doda/izbriše/uredi knjige" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ustvarjanje domače strani , kjer lahko user vidi svoje knjige in doda/izbriše/uredi knjige" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
