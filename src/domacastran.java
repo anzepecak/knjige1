@@ -21,16 +21,16 @@ public class domacastran extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        String[] columns = {"Naslov", "Avtor", "Žanr", "Datum Izdaje", "Delete", "Update"}; // Dodani stolpci za gumbi
+        String[] columns = {"Naslov", "Ime avtorja", "Priimek avtorja", "Žanr", "Datum Izdaje", "Delete", "Update"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
 
         // Dodajanje gumbov v stolpce "Delete" in "Update"
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(4).setCellRenderer(new ButtonRenderer());
-        columnModel.getColumn(4).setCellEditor(new ButtonEditorDelete(new JCheckBox()));
         columnModel.getColumn(5).setCellRenderer(new ButtonRenderer());
-        columnModel.getColumn(5).setCellEditor(new ButtonEditorUpdate(new JCheckBox()));
+        columnModel.getColumn(5).setCellEditor(new ButtonEditorDelete(new JCheckBox()));
+        columnModel.getColumn(6).setCellRenderer(new ButtonRenderer());
+        columnModel.getColumn(6).setCellEditor(new ButtonEditorUpdate(new JCheckBox()));
 
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
@@ -59,7 +59,7 @@ public class domacastran extends JFrame {
                     "knjiznica_owner", "unjLsCbBK4r3");
 
             // Fetch user's books from the database
-            String sql = "SELECT knjige.naslov, avtorji.ime AS avtor, zanri.ime AS zanr, knjige.dat_izdaje " +
+            String sql = "SELECT knjige.naslov, avtorji.ime, avtorji.priimek, zanri.ime AS zanr, knjige.dat_izdaje " +
                     "FROM knjige " +
                     "INNER JOIN avtorji ON knjige.avtor_id = avtorji.id " +
                     "INNER JOIN zanri ON knjige.zanr_id = zanri.id " +
@@ -72,10 +72,11 @@ public class domacastran extends JFrame {
             // Populate the table with fetched data
             while (resultSet.next()) {
                 String title = resultSet.getString("naslov");
-                String author = resultSet.getString("avtor");
+                String authorName = resultSet.getString("ime");
+                String authorSurname = resultSet.getString("priimek");
                 String genre = resultSet.getString("zanr");
                 String publicationDate = resultSet.getString("dat_izdaje");
-                String[] row = {title, author, genre, publicationDate, "Delete", "Update"}; // Dodani gumbi za brisanje in posodabljanje
+                String[] row = {title, authorName, authorSurname, genre, publicationDate, "Delete", "Update"};
                 ((DefaultTableModel) table.getModel()).addRow(row);
             }
 
@@ -131,8 +132,16 @@ public class domacastran extends JFrame {
 
     // Metoda za odpiranje okna za posodabljanje knjige
     private void updateBook(int rowIndex) {
-        // Prilagodite to metodo za odpiranje okna za posodabljanje knjige
-        JOptionPane.showMessageDialog(this, "Update book functionality is not implemented yet.");
+        try {
+            // Pridobimo naslov knjige iz izbrane vrstice
+            String bookTitle = (String) table.getValueAt(rowIndex, 0);
+
+            // Ustvarimo novo okno za posodabljanje knjige
+            new UpdateKnjiga(userId, bookTitle, this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating book: " + ex.getMessage());
+        }
     }
 
     // Razred ButtonRenderer za prikaz gumbov v tabeli
@@ -144,10 +153,23 @@ public class domacastran extends JFrame {
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
-            setText((value == null) ? "" : value.toString());
-            return this;
+            // Preverimo, ali je trenutni stolpec stolpec gumbov
+            if (column == 7) { // Če je stolpec "Delete"
+                setText("Delete");
+                return this;
+            } else if (column == 8) { // Če je stolpec "Update"
+                setText("Update");
+                return this;
+            } else { // Če gre za drug stolpec
+                setText((value == null) ? "" : value.toString());
+                return this;
+            }
         }
     }
+
+
+
+
 
     // Razred ButtonEditorDelete za urejanje celic z gumbom za brisanje
     class ButtonEditorDelete extends DefaultCellEditor {
