@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.sql.*;
 public class DodajZanr extends JFrame implements ActionListener {
     private JTextField imeField, opisField;
     private JButton dodajButton;
@@ -46,18 +46,26 @@ public class DodajZanr extends JFrame implements ActionListener {
                 Connection connection = DriverManager.getConnection("jdbc:postgresql://ep-billowing-feather-a2yuhppe.eu-central-1.aws.neon.tech/knjiznica",
                         "knjiznica_owner", "unjLsCbBK4r3");
 
-                String sql = "INSERT INTO zanri (ime, opis) VALUES (?, ?)";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setString(1, ime);
-                statement.setString(2, opis);
-                statement.executeUpdate();
+                // Klic shranjenega podprograma za dodajanje žanra
+                String sql = "{ ? = CALL dodaj_zanr(?, ?) }";
+                try (CallableStatement statement = connection.prepareCall(sql)) {
+                    statement.registerOutParameter(1, Types.BOOLEAN);
+                    statement.setString(2, ime);
+                    statement.setString(3, opis);
+                    statement.execute();
+                    boolean insertionSuccessful = statement.getBoolean(1);
 
-                JOptionPane.showMessageDialog(this, "Žanr uspešno dodan!");
+                    if (insertionSuccessful) {
+                        JOptionPane.showMessageDialog(this, "Žanr uspešno dodan!");
+                        parentFrame.refreshComboBox(); // Osvežitev JComboBox v starševskem oknu
+                        this.dispose(); // Zaprtje trenutnega okna
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Napaka pri dodajanju žanra.");
+                    }
+                }
 
                 connection.close();
                 parentFrame.refreshComboBox();
-
-                // Zapremo to okno
                 this.dispose();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -65,4 +73,5 @@ public class DodajZanr extends JFrame implements ActionListener {
             }
         }
     }
+
 }

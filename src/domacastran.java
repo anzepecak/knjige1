@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.*;
 public class domacastran extends JFrame {
     private JTable table;
     private int userId; // Dodan atribut za shranjevanje ID-ja uporabnika
@@ -98,18 +98,21 @@ public class domacastran extends JFrame {
             // Get book title from selected row
             String bookTitle = (String) table.getValueAt(rowIndex, 0);
 
-            // Delete book from the database only if it belongs to the logged-in user
-            String sql = "DELETE FROM knjige WHERE naslov = ? AND uporabnik_id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, bookTitle);
-            statement.setInt(2, userId); // Uporabimo ID prijavljenega uporabnika
-            int rowsAffected = statement.executeUpdate();
+            // Delete book using the server-side function
+            String sql = "{ ? = CALL delete_book(?, ?) }";
+            try (CallableStatement statement = connection.prepareCall(sql)) {
+                statement.registerOutParameter(1, Types.BOOLEAN);
+                statement.setString(2, bookTitle);
+                statement.setInt(3, userId);
+                statement.execute();
+                boolean deletionSuccessful = statement.getBoolean(1);
 
-            if (rowsAffected > 0) {
-                // Remove the row from the table if deletion was successful
-                ((DefaultTableModel) table.getModel()).removeRow(rowIndex);
-            } else {
-                JOptionPane.showMessageDialog(this, "The book does not belong to the current user.");
+                if (deletionSuccessful) {
+                    // Remove the row from the table if deletion was successful
+                    ((DefaultTableModel) table.getModel()).removeRow(rowIndex);
+                } else {
+                    JOptionPane.showMessageDialog(this, "The book does not belong to the current user.");
+                }
             }
 
             // Close the database connection
@@ -119,6 +122,7 @@ public class domacastran extends JFrame {
             JOptionPane.showMessageDialog(this, "Error deleting book: " + ex.getMessage());
         }
     }
+
 
     public void refresh() {
         // Clear the table
