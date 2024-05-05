@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.sql.*;
 public class Signup extends JFrame implements ActionListener {
     private static final String PGHOST = "ep-billowing-feather-a2yuhppe.eu-central-1.aws.neon.tech";
     private static final String PGDATABASE = "knjiznica";
@@ -70,15 +70,22 @@ public class Signup extends JFrame implements ActionListener {
     }
 
     private static boolean signup(Connection connection, String username, String email, String password) throws SQLException {
-        String sql = "INSERT INTO uporabniki (username, email, geslo) VALUES (?, ?, ?)";
+        String sql = "SELECT signup(?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
             statement.setString(2, email);
             statement.setString(3, password);
-            int rowsInserted = statement.executeUpdate();
-            return rowsInserted > 0;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                } else {
+                    throw new SQLException("No result returned.");
+                }
+            }
         }
     }
+
+
 
     public static void main(String[] args) {
         new Signup();

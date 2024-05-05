@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.Calendar;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.sql.*;
 import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -218,28 +218,35 @@ public class DodajKnjigo extends JFrame implements ActionListener {
                 int avtorId = avtorjiMap.get(avtor);
                 int zanrId = zanriMap.get(zanr);
 
-                String sql = "INSERT INTO knjige (naslov, avtor_id, zanr_id, dat_izdaje, uporabnik_id) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setString(1, naslov);
-                statement.setInt(2, avtorId);
-                statement.setInt(3, zanrId);
-                statement.setDate(4, new java.sql.Date(datum.getTime()));
-                statement.setInt(5, getUserId());
-                statement.executeUpdate();
+                // Call the server-side function to add the book
+                String sql = "{ ? = CALL dodaj_knjigo(?, ?, ?, ?, ?) }";
+                try (CallableStatement statement = connection.prepareCall(sql)) {
+                    statement.registerOutParameter(1, Types.BOOLEAN);
+                    statement.setString(2, naslov);
+                    statement.setInt(3, avtorId);
+                    statement.setInt(4, zanrId);
+                    statement.setDate(5, new java.sql.Date(datum.getTime()));
+                    statement.setInt(6, getUserId());
+                    statement.execute();
+                    boolean insertionSuccessful = statement.getBoolean(1);
 
-                JOptionPane.showMessageDialog(this, "Knjiga uspešno dodana!");
+                    if (insertionSuccessful) {
+                        JOptionPane.showMessageDialog(this, "Knjiga uspešno dodana!");
+                        refreshTable();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Napaka pri dodajanju knjige.");
+                    }
+                }
 
                 connection.close();
-
-                // Close the DodajKnjigo window after successfully adding the book
-                dispose();
-                refreshTable();
+                dispose(); // Close the DodajKnjigo window
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Napaka pri dodajanju knjige: " + ex.getMessage());
             }
         }
     }
+
 
 
     private int getUserId() {

@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-
+import java.sql.*;
 public class UpdateKnjiga extends JFrame {
 
     private int userId;
@@ -147,47 +147,62 @@ public class UpdateKnjiga extends JFrame {
             }
 
             // Posodobi naslov knjige
-            String updateTitleSql = "UPDATE knjige SET naslov = ? WHERE naslov = ? AND uporabnik_id = ?";
-            PreparedStatement updateTitleStatement = connection.prepareStatement(updateTitleSql);
-            updateTitleStatement.setString(1, newTitle);
-            updateTitleStatement.setString(2, bookTitle);
-            updateTitleStatement.setInt(3, userId);
-            updateTitleStatement.executeUpdate();
+            String updateTitleSql = "{ ? = CALL posodobi_naslov_knjige(?, ?, ?) }";
+            try (CallableStatement updateTitleStatement = connection.prepareCall(updateTitleSql)) {
+                updateTitleStatement.registerOutParameter(1, Types.BOOLEAN);
+                updateTitleStatement.setString(2, newTitle);
+                updateTitleStatement.setString(3, bookTitle);
+                updateTitleStatement.setInt(4, userId);
+                updateTitleStatement.execute();
+                boolean titleUpdateSuccessful = updateTitleStatement.getBoolean(1);
+            }
 
             // Posodobi ime avtorja, če se je spremenilo
             if (!newAuthorName.equals(oldAuthorName)) {
-                String updateAuthorNameSql = "UPDATE avtorji SET ime = ? WHERE ime = ? AND priimek = ?";
-                PreparedStatement updateAuthorNameStatement = connection.prepareStatement(updateAuthorNameSql);
-                updateAuthorNameStatement.setString(1, newAuthorName);
-                updateAuthorNameStatement.setString(2, oldAuthorName);
-                updateAuthorNameStatement.setString(3, oldAuthorSurname);
-                updateAuthorNameStatement.executeUpdate();
+                String updateAuthorNameSql = "{ ? = CALL posodobi_ime_avtorja(?, ?, ?) }";
+                try (CallableStatement updateAuthorNameStatement = connection.prepareCall(updateAuthorNameSql)) {
+                    updateAuthorNameStatement.registerOutParameter(1, Types.BOOLEAN);
+                    updateAuthorNameStatement.setString(2, newAuthorName);
+                    updateAuthorNameStatement.setString(3, oldAuthorName);
+                    updateAuthorNameStatement.setString(4, oldAuthorSurname);
+                    updateAuthorNameStatement.execute();
+                    boolean authorNameUpdateSuccessful = updateAuthorNameStatement.getBoolean(1);
+                }
             }
 
             // Posodobi priimek avtorja, če se je spremenilo
             if (!newAuthorSurname.equals(oldAuthorSurname)) {
-                String updateAuthorSurnameSql = "UPDATE avtorji SET priimek = ? WHERE ime = ? AND priimek = ?";
-                PreparedStatement updateAuthorSurnameStatement = connection.prepareStatement(updateAuthorSurnameSql);
-                updateAuthorSurnameStatement.setString(1, newAuthorSurname);
-                updateAuthorSurnameStatement.setString(2, newAuthorName);
-                updateAuthorSurnameStatement.setString(3, oldAuthorSurname);
-                updateAuthorSurnameStatement.executeUpdate();
+                String updateAuthorSurnameSql = "{ ? = CALL posodobi_priimek_avtorja(?, ?, ?) }";
+                try (CallableStatement updateAuthorSurnameStatement = connection.prepareCall(updateAuthorSurnameSql)) {
+                    updateAuthorSurnameStatement.registerOutParameter(1, Types.BOOLEAN);
+                    updateAuthorSurnameStatement.setString(2, newAuthorSurname);
+                    updateAuthorSurnameStatement.setString(3, newAuthorName);
+                    updateAuthorSurnameStatement.setString(4, oldAuthorSurname);
+                    updateAuthorSurnameStatement.execute();
+                    boolean authorSurnameUpdateSuccessful = updateAuthorSurnameStatement.getBoolean(1);
+                }
             }
 
             // Posodobi žanr knjige
-            String updateGenreSql = "UPDATE zanri SET ime = ? WHERE ime = ?";
-            PreparedStatement updateGenreStatement = connection.prepareStatement(updateGenreSql);
-            updateGenreStatement.setString(1, newGenre);
-            updateGenreStatement.setString(2, oldGenre);
-            updateGenreStatement.executeUpdate();
+            String updateGenreSql = "{ ? = CALL posodobi_zanr_knjige(?, ?) }";
+            try (CallableStatement updateGenreStatement = connection.prepareCall(updateGenreSql)) {
+                updateGenreStatement.registerOutParameter(1, Types.BOOLEAN);
+                updateGenreStatement.setString(2, newGenre);
+                updateGenreStatement.setString(3, oldGenre);
+                updateGenreStatement.execute();
+                boolean genreUpdateSuccessful = updateGenreStatement.getBoolean(1);
+            }
 
             // Posodobi datum izdaje knjige
-            String updatePublicationDateSql = "UPDATE knjige SET dat_izdaje = ? WHERE naslov = ? AND uporabnik_id = ?";
-            PreparedStatement updatePublicationDateStatement = connection.prepareStatement(updatePublicationDateSql);
-            updatePublicationDateStatement.setDate(1, newPublicationDate);
-            updatePublicationDateStatement.setString(2, newTitle);
-            updatePublicationDateStatement.setInt(3, userId);
-            updatePublicationDateStatement.executeUpdate();
+            String updatePublicationDateSql = "{ ? = CALL posodobi_datum_izdaje_knjige(?, ?, ?) }";
+            try (CallableStatement updatePublicationDateStatement = connection.prepareCall(updatePublicationDateSql)) {
+                updatePublicationDateStatement.registerOutParameter(1, Types.BOOLEAN);
+                updatePublicationDateStatement.setDate(2, newPublicationDate);
+                updatePublicationDateStatement.setString(3, newTitle);
+                updatePublicationDateStatement.setInt(4, userId);
+                updatePublicationDateStatement.execute();
+                boolean publicationDateUpdateSuccessful = updatePublicationDateStatement.getBoolean(1);
+            }
 
             // Če je bila knjiga uspešno posodobljena, osvežimo tabelo in zapremo okno
             parentFrame.refresh(); // Osvežimo tabelo na glavnem oknu
@@ -202,6 +217,7 @@ public class UpdateKnjiga extends JFrame {
             JOptionPane.showMessageDialog(this, "Napaka pri posodabljanju knjige: " + ex.getMessage());
         }
     }
+
 
 
 

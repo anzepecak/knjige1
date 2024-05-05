@@ -15,7 +15,7 @@ import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-
+import java.sql.*;
 
 public class DodajAvtorja extends JFrame implements ActionListener {
     private JTextField imeField, priimekField, nagradeField;
@@ -77,30 +77,35 @@ public class DodajAvtorja extends JFrame implements ActionListener {
                 // Pridobimo ID države glede na izbrano ime države
                 int drzavaId = getDrzavaId(drzava);
 
-                String sql = "INSERT INTO avtorji (ime, priimek, drzava_id, dat_roj, nagrade) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setString(1, ime);
-                statement.setString(2, priimek);
-                statement.setInt(3, drzavaId);
-                statement.setDate(4, new java.sql.Date(datum.getTime()));
-                statement.setString(5, nagrade);
-                statement.executeUpdate();
+                // Klic shranjenega podprograma za dodajanje avtorja
+                String sql = "{ ? = CALL dodaj_avtorja(?, ?, ?, ?, ?) }";
+                try (CallableStatement statement = connection.prepareCall(sql)) {
+                    statement.registerOutParameter(1, Types.BOOLEAN);
+                    statement.setString(2, ime);
+                    statement.setString(3, priimek);
+                    statement.setInt(4, drzavaId);
+                    statement.setDate(5, new java.sql.Date(datum.getTime()));
+                    statement.setString(6, nagrade);
+                    statement.execute();
+                    boolean insertionSuccessful = statement.getBoolean(1);
 
-                JOptionPane.showMessageDialog(this, "Avtor uspešno dodan!");
+                    if (insertionSuccessful) {
+                        JOptionPane.showMessageDialog(this, "Avtor uspešno dodan!");
+                        parentFrame.refreshComboBox(); // Osvežitev JComboBox v starševskem oknu
+                        this.dispose(); // Zaprtje trenutnega okna
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Napaka pri dodajanju avtorja.");
+                    }
+                }
 
                 connection.close();
-
-                // Osvežimo JComboBox v starševskem oknu
-                parentFrame.refreshComboBox();
-
-                // Zapremo to okno
-                this.dispose();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Napaka pri dodajanju avtorja: " + ex.getMessage());
             }
         }
     }
+
 
     private void populateDrzavaComboBox() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://ep-billowing-feather-a2yuhppe.eu-central-1.aws.neon.tech/knjiznica",

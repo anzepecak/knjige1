@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af7a62bb-ba01-4f55-aad9-0bbefcb7bbbb" name="Changes" comment="Dodajanje knjig in notri lahko dodamo nove žanre ali avtorje">
+    <list default="true" id="af7a62bb-ba01-4f55-aad9-0bbefcb7bbbb" name="Changes" comment="Urejanje knjig prijavljenega uporabnika">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DodajAvtorja.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DodajAvtorja.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DodajKnjigo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DodajKnjigo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DodajZanr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DodajZanr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Signup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Signup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UpdateKnjiga.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UpdateKnjiga.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/domacastran.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/domacastran.java" afterDir="false" />
     </list>
@@ -25,26 +28,26 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Dodajanje-knjig" />
+        <entry key="$PROJECT_DIR$" value="Urejanje-knjig" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "anzepecak"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;anzepecak&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/anzepecak/knjige1.git",
-    "accountId": "fa57200c-fd44-4923-81d0-c845ec8b4ba0"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/anzepecak/knjige1.git&quot;,
+    &quot;accountId&quot;: &quot;fa57200c-fd44-4923-81d0-c845ec8b4ba0&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2fuQI2WI5ARcJgCYLe4vPr9Yk6S" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -63,7 +66,7 @@
     "Application.Signup.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Urejanje-knjig",
+    "git-widget-placeholder": "Strezniski-podprogrami",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/timur/Desktop/jdatepicker-1.3.4.jar",
     "onboarding.tips.debug.path": "C:/Users/timur/Desktop/knjigeprojekt/knjige123/src/Main.java",
@@ -188,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714673758088</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Urejanje knjig prijavljenega uporabnika">
+      <option name="closed" value="true" />
+      <created>1714813698440</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1714813698440</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -197,7 +208,8 @@
     <MESSAGE value="Ustvarjanje signup paga" />
     <MESSAGE value="Ustvarjanje domače strani , kjer lahko user vidi svoje knjige in doda/izbriše/uredi knjige" />
     <MESSAGE value="Dodajanje knjig in notri lahko dodamo nove žanre ali avtorje" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dodajanje knjig in notri lahko dodamo nove žanre ali avtorje" />
+    <MESSAGE value="Urejanje knjig prijavljenega uporabnika" />
+    <option name="LAST_COMMIT_MESSAGE" value="Urejanje knjig prijavljenega uporabnika" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
